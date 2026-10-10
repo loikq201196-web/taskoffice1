@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TaskOffice - công cụ minh họa hỗ trợ theo dõi, đôn đốc và tổng hợp tiến độ nhiệm vụ.">
+  <title>TaskOffice | Theo dõi nhiệm vụ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">T</div>
+      <div><strong>TaskOffice</strong><span>THEO DÕI NHIỆM VỤ</span></div>
+    </div>
+    <div class="workspace-label">KHÔNG GIAN LÀM VIỆC</div>
+    <nav class="nav" aria-label="Điều hướng chính">
+      <button class="nav-item active" data-page="dashboard"><span class="nav-icon">▦</span><span>Tổng quan</span></button>
+      <button class="nav-item" data-page="notices"><span class="nav-icon">▤</span><span>Thông báo kết luận</span></button>
+      <button class="nav-item" data-page="tasks"><span class="nav-icon">☷</span><span>Quản lý nhiệm vụ</span></button>
+      <button class="nav-item" data-page="followup"><span class="nav-icon">◷</span><span>Theo dõi, đôn đốc</span><span class="nav-count" id="followupCount">0</span></button>
+      <button class="nav-item" data-page="reports"><span class="nav-icon">▥</span><span>Báo cáo tổng hợp</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="demo-note"><span class="demo-dot"></span><div><strong>Chế độ đồ án</strong><p>Dữ liệu minh họa, lưu trên trình duyệt này.</p></div></div>
+      <button class="reset-link" id="resetDemo">↻ Khôi phục dữ liệu mẫu</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button>
+      <div class="breadcrumb"><span>TaskOffice</span><b>/</b><strong id="crumbTitle">Tổng quan</strong></div>
+      <div class="topbar-right"><span class="demo-badge">● BẢN DEMO</span><div class="avatar">TH</div><div class="user-label"><strong>Cán bộ tổng hợp</strong><span>Không gian cá nhân</span></div></div>
+    </header>
+
+    <section class="page active" id="page-dashboard">
+      <div class="page-heading">
+        <div><p class="eyebrow">TRUNG TÂM ĐIỀU PHỐI CÔNG VIỆC</p><h1>Tổng quan nhiệm vụ</h1><p class="subheading">Nắm nhanh tiến độ, nhận diện việc cần chú ý và chủ động đôn đốc.</p></div>
+        <button class="btn btn-primary" id="quickAddTask">＋ Thêm nhiệm vụ</button>
+      </div>
+      <div class="stat-grid">
+        <article class="stat-card"><div class="stat-top"><span>Tổng nhiệm vụ</span><span class="stat-icon navy">☷</span></div><strong id="statTotal">0</strong><small>Được ghi nhận trên hệ thống</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Chưa thực hiện</span><span class="stat-icon gray">○</span></div><strong id="statTodo">0</strong><small>Chưa bắt đầu triển khai</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Đang thực hiện</span><span class="stat-icon blue">◷</span></div><strong id="statDoing">0</strong><small>Đang trong quá trình xử lý</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Sắp đến hạn</span><span class="stat-icon amber">⌛</span></div><strong id="statSoon">0</strong><small>Trong 3 ngày tới, chưa hoàn thành</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Quá hạn</span><span class="stat-icon red">!</span></div><strong id="statOverdue">0</strong><small>Chưa hoàn thành sau thời hạn</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Đã hoàn thành</span><span class="stat-icon green">✓</span></div><strong id="statDone">0</strong><small>Đã cập nhật hoàn thành</small></article>
+      </div>
+      <div class="content-grid">
+        <section class="panel attention-panel">
+          <div class="panel-heading"><div><h2>Nhiệm vụ cần chú ý</h2><p>Ưu tiên xử lý theo thời hạn và trạng thái</p></div><button class="text-button" data-goto="followup">Xem tất cả →</button></div>
+          <div id="attentionList" class="attention-list"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-heading"><div><h2>Tình hình theo trạng thái</h2><p>Tỷ trọng trên tổng nhiệm vụ</p></div></div>
+          <div id="statusBreakdown" class="breakdown"></div>
+          <div class="panel-footnote">Số liệu được tính từ dữ liệu hiện có trong trình duyệt.</div>
+        </section>
+      </div>
+      <div class="notice-strip"><div class="notice-strip-icon">i</div><div><strong>Lưu ý về dữ liệu</strong><p>TaskOffice là bản minh họa phục vụ đồ án. Không nhập văn bản mật, nội dung chỉ đạo thật hoặc dữ liệu cá nhân, nội bộ của cơ quan.</p></div></div>
+    </section>
+
+    <section class="page" id="page-notices">
+      <div class="page-heading"><div><p class="eyebrow">NGUỒN GIAO NHIỆM VỤ</p><h1>Thông báo kết luận</h1><p class="subheading">Quản lý văn bản nguồn và xem các nhiệm vụ được bóc tách từ từng văn bản.</p></div><button class="btn btn-primary" id="addNotice">＋ Thêm văn bản</button></div>
+      <div class="panel">
+        <div class="toolbar"><div class="search-box"><span>⌕</span><input id="noticeSearch" placeholder="Tìm số hiệu hoặc trích yếu..."></div><span class="result-count" id="noticeCount">0 văn bản</span></div>
+        <div class="table-wrap"><table><thead><tr><th>SỐ, KÝ HIỆU / TRÍCH YẾU</th><th>NGÀY BAN HÀNH</th><th>SỐ NHIỆM VỤ</th><th>TÌNH HÌNH</th><th></th></tr></thead><tbody id="noticeTable"></tbody></table></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-tasks">
+      <div class="page-heading"><div><p class="eyebrow">DANH MỤC CÔNG VIỆC</p><h1>Quản lý nhiệm vụ</h1><p class="subheading">Mỗi nhiệm vụ gắn với văn bản nguồn, đơn vị chủ trì và thời hạn hoàn thành.</p></div><button class="btn btn-primary" id="addTask">＋ Thêm nhiệm vụ</button></div>
+      <div class="panel">
+        <div class="filter-toolbar">
+          <div class="search-box"><span>⌕</span><input id="taskSearch" placeholder="Tìm nội dung nhiệm vụ..."></div>
+          <select id="filterStatus" aria-label="Lọc trạng thái"><option value="">Tất cả trạng thái</option><option value="todo">Chưa thực hiện</option><option value="doing">Đang thực hiện</option><option value="done">Đã hoàn thành</option></select>
+          <select id="filterUnit" aria-label="Lọc đơn vị"><option value="">Tất cả đơn vị</option></select>
+          <select id="filterDeadline" aria-label="Lọc thời hạn"><option value="">Tất cả thời hạn</option><option value="soon">Sắp đến hạn</option><option value="overdue">Quá hạn</option><option value="nodate">Chưa có thời hạn</option></select>
+          <div class="toolbar-actions"><button class="btn btn-secondary btn-compact" id="exportTasks">⇩ Xuất CSV</button><button class="btn btn-secondary btn-compact" id="importTasks">⇧ Nhập CSV</button><input id="importTasksFile" type="file" accept=".csv,text/csv" hidden></div>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>NHIỆM VỤ / VĂN BẢN NGUỒN</th><th>ĐƠN VỊ CHỦ TRÌ</th><th>THỜI HẠN</th><th>TRẠNG THÁI</th><th>TIẾN ĐỘ</th><th></th></tr></thead><tbody id="taskTable"></tbody></table></div>
+        <div class="table-footer"><span id="taskCount">0 nhiệm vụ</span><span>Nhập/xuất CSV giúp sao lưu và chuyển dữ liệu thủ công giữa các máy.</span></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-followup">
+      <div class="page-heading"><div><p class="eyebrow">CHỦ ĐỘNG RÀ SOÁT</p><h1>Theo dõi, đôn đốc</h1><p class="subheading">Tập trung vào nhiệm vụ sắp đến hạn, quá hạn hoặc lâu chưa cập nhật.</p></div></div>
+      <div class="followup-tabs"><button class="follow-tab active" data-follow="all">Tất cả cần chú ý <span id="followAllCount">0</span></button><button class="follow-tab" data-follow="overdue">Quá hạn <span id="followOverdueCount">0</span></button><button class="follow-tab" data-follow="soon">Sắp đến hạn <span id="followSoonCount">0</span></button><button class="follow-tab" data-follow="stale">Lâu chưa cập nhật <span id="followStaleCount">0</span></button></div>
+      <div class="panel"><div class="table-wrap"><table><thead><tr><th>NHIỆM VỤ</th><th>ĐƠN VỊ CHỦ TRÌ</th><th>THỜI HẠN</th><th>TÌNH TRẠNG</th><th>LẦN ĐÔN ĐỐC GẦN NHẤT</th><th></th></tr></thead><tbody id="followTable"></tbody></table></div><div class="table-footer"><span id="followTableCount">0 nhiệm vụ</span><span>Ghi nhận đôn đốc giúp lưu lại diễn biến theo thời gian.</span></div></div>
+    </section>
+
+    <section class="page" id="page-reports">
+      <div class="page-heading"><div><p class="eyebrow">TỔNG HỢP PHỤC VỤ BÁO CÁO</p><h1>Báo cáo tổng hợp</h1><p class="subheading">Lọc dữ liệu theo thời gian, đơn vị hoặc trạng thái và xuất bảng tổng hợp.</p></div><button class="btn btn-primary" id="exportReport">⇩ Xuất CSV mở bằng Excel</button></div>
+      <div class="panel report-filters"><div class="field"><label for="reportFrom">Từ ngày giao</label><input type="date" id="reportFrom"></div><div class="field"><label for="reportTo">Đến ngày giao</label><input type="date" id="reportTo"></div><div class="field"><label for="reportUnit">Đơn vị chủ trì</label><select id="reportUnit"><option value="">Tất cả đơn vị</option></select></div><div class="field"><label for="reportStatus">Trạng thái</label><select id="reportStatus"><option value="">Tất cả trạng thái</option><option value="todo">Chưa thực hiện</option><option value="doing">Đang thực hiện</option><option value="done">Đã hoàn thành</option></select></div><button class="btn btn-secondary" id="clearReportFilters">Xóa bộ lọc</button></div>
+      <div class="stat-grid report-stats"><article class="stat-card"><div class="stat-top"><span>Tổng nhiệm vụ</span><span class="stat-icon navy">☷</span></div><strong id="reportTotal">0</strong><small>Theo điều kiện lọc</small></article><article class="stat-card"><div class="stat-top"><span>Đã hoàn thành</span><span class="stat-icon green">✓</span></div><strong id="reportDone">0</strong><small>Đã cập nhật hoàn thành</small></article><article class="stat-card"><div class="stat-top"><span>Đang thực hiện</span><span class="stat-icon blue">◷</span></div><strong id="reportDoing">0</strong><small>Đang triển khai</small></article><article class="stat-card"><div class="stat-top"><span>Quá hạn</span><span class="stat-icon red">!</span></div><strong id="reportOverdue">0</strong><small>Chưa hoàn thành sau hạn</small></article></div>
+      <div class="content-grid report-grid"><section class="panel"><div class="panel-heading"><div><h2>Tình hình theo đơn vị</h2><p>Số nhiệm vụ theo đơn vị chủ trì</p></div></div><div id="unitReport" class="unit-report"></div></section><section class="panel"><div class="panel-heading"><div><h2>Danh sách chi tiết</h2><p>Dữ liệu sẽ được đưa vào tệp xuất</p></div></div><div id="reportPreview" class="report-preview"></div></section></div>
+    </section>
+    <footer class="app-footer"><span>TaskOffice · Bản minh họa phục vụ học tập</span><span>Không thay thế hệ thống quản lý văn bản chính thức</span></footer>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><p class="eyebrow">TASKOFFICE</p><h2 id="modalTitle">Thêm nhiệm vụ</h2></div><button class="icon-button" id="closeModal" aria-label="Đóng">×</button></div>
+      <form id="editorForm"><div id="modalFields" class="modal-fields"></div><div class="modal-actions"><button type="button" class="btn btn-secondary" id="cancelModal">Hủy</button><button type="submit" class="btn btn-primary" id="saveModal">Lưu thông tin</button></div></form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
